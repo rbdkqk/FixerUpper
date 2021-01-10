@@ -1,5 +1,5 @@
 {
-  "name": "FixerUpper",
+  "name": "react-idea-editor",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rbdkqk/FixerUpper.git"
+    "url": "git+https://github.com/rbdkqk/react-idea-editor.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rbdkqk/FixerUpper/issues"
+    "url": "https://github.com/rbdkqk/react-idea-editor/issues"
   },
-  "homepage": "https://github.com/rbdkqk/FixerUpper#readme",
+  "homepage": "https://github.com/rbdkqk/react-idea-editor#readme",
   "dependencies": {
     "next": "^10.0.5",
     "react": "^17.0.1",
