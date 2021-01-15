@@ -15,6 +15,7 @@ export default function ItalicButton({ isItalic, size }) {
         width={size}
         height={size}
         style={{
+          padding: '2px',
           backgroundColor: 'white',
           color: isItalic ? 'skyblue' : 'black',
         }}

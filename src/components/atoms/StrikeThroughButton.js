@@ -15,6 +15,7 @@ export default function StrikeThroughButton({ isStrikeThrough, size }) {
         width={size}
         height={size}
         style={{
+          padding: '2px',
           backgroundColor: 'white',
           color: isStrikeThrough ? 'skyblue' : 'black',
         }}
