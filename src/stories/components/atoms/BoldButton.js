@@ -15,6 +15,7 @@ export default function BoldButton({ isBold, size }) {
         width={size}
         height={size}
         style={{
+          padding: '2px',
           backgroundColor: 'white',
           color: isBold ? 'skyblue' : 'black',
         }}

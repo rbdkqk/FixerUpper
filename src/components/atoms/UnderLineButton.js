@@ -15,6 +15,7 @@ export default function UnderLineButton({ isUnderLine, size }) {
         width={size}
         height={size}
         style={{
+          padding: '2px',
           backgroundColor: 'white',
           color: isUnderLine ? 'skyblue' : 'black',
         }}
