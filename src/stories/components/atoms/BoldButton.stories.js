@@ -3,7 +3,10 @@ import { BoldButton } from './';
 export default {
   title: 'Atoms/BoldButton',
   component: BoldButton,
-  argTypes: {},
+  argTypes: {
+    isBold: { control: 'boolean' },
+    size: { control: 'number' },
+  },
 };
 
 const Template = (args) => <BoldButton {...args} />;
