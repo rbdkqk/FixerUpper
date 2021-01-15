@@ -4,6 +4,7 @@ import ItalicButton from './ItalicButton';
 import UnderLineButton from './UnderLineButton';
 import StrikeThroughButton from './StrikeThroughButton';
 import TextColorButton from './TextColorButton';
+import LinkButton from './LinkButton';
 
 export {
   TitleInput,
@@ -12,4 +13,5 @@ export {
   UnderLineButton,
   StrikeThroughButton,
   TextColorButton,
+  LinkButton,
 };
