@@ -3,9 +3,7 @@ import { TitleBox } from './';
 export default {
   title: 'Organisms/TitleBox',
   component: TitleBox,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 };
 
 const Template = (args) => <TitleBox {...args} />;

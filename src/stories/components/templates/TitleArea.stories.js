@@ -3,9 +3,7 @@ import { TitleArea } from './';
 export default {
   title: 'Templates/TitleArea',
   component: TitleArea,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 };
 
 const Template = (args) => <TitleArea {...args} />;

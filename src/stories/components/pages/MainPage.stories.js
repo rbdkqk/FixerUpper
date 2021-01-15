@@ -3,9 +3,7 @@ import { MainPage } from './';
 export default {
   title: 'Pages/MainPage',
   component: MainPage,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 };
 
 const Template = (args) => <MainPage {...args} />;

@@ -3,9 +3,7 @@ import { ContentsArea } from './';
 export default {
   title: 'Templates/ContentsArea',
   component: ContentsArea,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 };
 
 const Template = (args) => <ContentsArea {...args} />;
