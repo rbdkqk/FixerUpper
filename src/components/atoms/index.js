@@ -1,3 +1,4 @@
 import TitleInput from './TitleInput';
+import BoldButton from './BoldButton';
 
-export { TitleInput };
+export { TitleInput, BoldButton };
