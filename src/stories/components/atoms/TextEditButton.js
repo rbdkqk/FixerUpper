@@ -52,6 +52,7 @@ const TextEditButtonWrap = styled.button`
   border: none;
   outline: none;
   background-color: white;
-  margin: 0;
-  padding: 0;
+  margin: 0px 1px;
+  padding: 0px;
+  cursor: pointer;
 `;
