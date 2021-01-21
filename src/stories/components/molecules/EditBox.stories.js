@@ -10,7 +10,7 @@ export default {
 
 const Template = (args) => <EditBox {...args} />;
 
-export const EditBoxExample_Show = Template.bind({});
-EditBoxExample_Show.args = {
+export const EditBox_Show = Template.bind({});
+EditBox_Show.args = {
   isShow: true,
 };
