@@ -47,3 +47,5 @@ const TextColorButtonWrap = styled.button`
   padding: 0px;
   cursor: pointer;
 `;
+
+// hover 속성으로 label을 띄울 tooltip이 있어야 할 듯
