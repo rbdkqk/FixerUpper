@@ -3599,6 +3599,11 @@
     "postcss" "^7.0.32"
     "postcss-value-parser" "^4.1.0"
 
+"autosize@^4.0.2":
+  "integrity" "sha512-jnSyH2d+qdfPGpWlcuhGiHmqBJ6g3X+8T+iRwFrHPLVcdoGJE/x6Qicm6aDHfTsbgZKxyV8UU/YB2p4cjKDRRA=="
+  "resolved" "https://registry.npmjs.org/autosize/-/autosize-4.0.2.tgz"
+  "version" "4.0.2"
+
 "aws-sign2@~0.7.0":
   "integrity" "sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg="
   "resolved" "https://registry.npmjs.org/aws-sign2/-/aws-sign2-0.7.0.tgz"
