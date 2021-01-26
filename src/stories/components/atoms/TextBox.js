@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import autosize from 'autosize';
 
 export default function TextBox({ id, index, content, handleContentInput }) {
   const [currentContent, setCurrentContent] = useState(content);
-  const [areaHeight, setAreaHeight] = useState(30);
+  const [areaHeight, setAreaHeight] = useState(25);
 
-  let ghost;
+  useEffect(() => {
+    autosize(document.querySelector(`.TextBoxWrap_${id}`));
+  }, [currentContent]);
 
   return (
     <TextBoxContainer
@@ -15,23 +18,17 @@ export default function TextBox({ id, index, content, handleContentInput }) {
         document.querySelector(`.TextBoxContainer_${id}`).focus();
       }}
     >
-      <GhostDiv
-        className={`GhostDiv_${id}`}
-        areaHeight={areaHeight}
-        ref={(c) => (ghost = c)}
-        aria-hidden='true'
-      >
-        {currentContent}
-      </GhostDiv>
       <TextBoxWrap
         className={`TextBoxWrap_${id}`}
+        // ref={c => (this.textarea = c)}
         areaHeight={areaHeight}
         onChange={(event) => {
           setCurrentContent(event.target.value);
         }}
         onBlur={() => handleContentInput(id, index, currentContent)}
         onKeyUp={() => {
-          let newHeight = ghost.clientHeight;
+          let newHeight = document.querySelector(`.TextBoxWrap_${id}`)
+            .clientHeight;
           setAreaHeight(newHeight);
         }}
         value={currentContent}
@@ -45,43 +42,27 @@ const TextBoxContainer = styled.div`
   width: 100%;
   height: ${(props) => `${props.areaHeight}px`};
 
-  /* border: 1px solid black; */
+  border: 1px solid black;
   margin: 3px;
-  position: relative;
-`;
-
-const GhostDiv = styled.div`
-  border: none;
-  width: 100%;
-  outline: none;
-  min-height: ${(props) => `${props.areaHeight}px`};
-  padding: 0;
-  box-shadow: none;
-  display: block;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow: hidden; // Removes scrollbar
-  position: absolute;
-  font-size: 18px;
-  line-height: 1.5em;
-  font-family: Georgia, 'Malgun Gothic', serif;
+  padding: 2px;
 `;
 
 const TextBoxWrap = styled.textarea`
   /* border: 1px solid black; */
+  box-sizing: 'border-box';
   border: none;
   outline: none;
 
   width: 100%;
-  outline: none;
-  height: ${(props) => `${props.areaHeight}px`};
-  padding: 0;
+  min-height: 20px;
+  height: 20px;
+
+  /* padding: 2x; */
   box-shadow: none;
   display: block;
   overflow: hidden; // Removes scrollbar
-  position: absolute;
   resize: none;
   font-size: 18px;
-  line-height: 1.5em;
-  font-family: Georgia, 'Malgun Gothic', serif;
+  /* line-height: 1.5em; */
+  /* font-family: Georgia, 'Malgun Gothic', serif; */
 `;
