@@ -1,4 +1,4 @@
-import { TextColorButton } from './';
+import { TextColorButton } from '../../../components/atoms';
 
 export default {
   title: 'Atoms/TextColorButton',

@@ -1,4 +1,4 @@
-import { TitleInput } from './';
+import { TitleInput } from '../../../components/atoms';
 
 export default {
   title: 'Atoms/TitleInput',

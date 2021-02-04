@@ -1,4 +1,4 @@
-import { ContentsArea } from './';
+import { ContentsArea } from '../../../components/templates';
 
 export default {
   title: 'Templates/ContentsArea',

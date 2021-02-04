@@ -1,4 +1,4 @@
-import { TitleArea } from './';
+import { TitleArea } from '../../../components/templates';
 
 export default {
   title: 'Templates/TitleArea',

@@ -1,4 +1,4 @@
-import { EditBox } from '.';
+import { EditBox } from '../../../components/molecules';
 
 export default {
   title: 'Molecules/EditBox',

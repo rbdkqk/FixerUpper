@@ -1,4 +1,4 @@
-import { MainPage } from './';
+import { MainPage } from '../../../components/pages';
 
 export default {
   title: 'Pages/MainPage',

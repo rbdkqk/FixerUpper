@@ -1,4 +1,4 @@
-import { TitleBox } from './';
+import { TitleBox } from '../../../components/organisms';
 
 export default {
   title: 'Organisms/TitleBox',

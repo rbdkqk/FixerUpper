@@ -1,18 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { TextBox } from '../atoms';
 
 export default function ContentsArea() {
+  class EachTextParagraph {
+    constructor(id, type, index, content) {
+      this.id = id;
+      this.type = type;
+      this.index = index;
+      this.content = content;
+    }
+  }
+
   // 현재 나열된 TextBox들의 목록
   // 기본적으로 TextBox 객체 하나가 들어가 있는 상태여야 하지 않나?
   const [textList, setTextList] = useState([
-    {
-      id: 0,
-      type: 'contents',
-      index: 0,
-      content: '',
-    },
+    new EachTextParagraph(0, 'contents', 0, ``),
   ]);
+
+  const [newTextBoxAdded, setNewTextBoxAdded] = useState(false);
 
   // textBoxIds를 위해, id들을 모아 만든 배열을 구하기
   const getIdsArray = () => {
@@ -43,19 +49,11 @@ export default function ContentsArea() {
       // textList 맨 뒤에, 새로운 TextBox 객체를 추가하고
       setTextList([
         ...textList,
-        {
-          id: nextId,
-          type: 'contents',
-          index: textList.length,
-          content: '',
-        },
+        new EachTextParagraph(nextId, 'contents', textList.length, ``),
       ]);
-    }
 
-    // 가장 밑의 TextBox에 focus 주기
-    document
-      .querySelector(`.TextBoxWrap_${textList[textList.length - 1].id}`)
-      .focus();
+      setNewTextBoxAdded(true);
+    }
   };
 
   // 각 TextBox의 content 내용 입력 반영하기
@@ -64,18 +62,13 @@ export default function ContentsArea() {
     let after = textList.slice(index + 1);
     setTextList([
       ...before,
-      {
-        id: id,
-        type: 'contents',
-        index: index,
-        content: content,
-      },
+      new EachTextParagraph(id, 'contents', index, content),
       ...after,
     ]);
   };
 
   // ContentsAreaWrap 안에 나열될 개별 TextBox들의 모임
-  let contentsList = textList.map((eachTextBox) => {
+  let contentsList = textList.map((eachTextBox, index) => {
     return (
       <TextBox
         key={eachTextBox.id}
@@ -87,14 +80,29 @@ export default function ContentsArea() {
     );
   });
 
+  useEffect(() => {
+    // 새 TextBox가 추가되면, 가장 밑의 TextBox에 focus 주기
+    if (newTextBoxAdded) {
+      document
+        .querySelector(`.TextBoxWrap_${textList[textList.length - 1].id}`)
+        .focus();
+      setNewTextBoxAdded(false);
+    }
+  }, [newTextBoxAdded]);
+
   return (
     <ContentsAreaWrap
       className='ContentsAreaWrap'
-      onClick={() => {
-        console.log(
-          '패딩 영역을 클릭해도 이벤트가 잘 작동한다 => 클릭하면 현재 글목록 배열의 마지막 값을 체크해서, 텍스트가 비어있지 않으면 뒤에 컴포넌트 추가하기'
-        );
-        handleBlankAreaClick();
+      onClick={(e) => {
+        let targetClassName = e.target.className;
+        let TextBoxWrapIndex = targetClassName.indexOf('TextBoxWrap');
+
+        if (TextBoxWrapIndex !== -1) {
+          let TextBoxWrapClassName = targetClassName.slice(TextBoxWrapIndex);
+          document.querySelector(`.${TextBoxWrapClassName}`).focus();
+        } else {
+          handleBlankAreaClick();
+        }
       }}
     >
       {contentsList}
