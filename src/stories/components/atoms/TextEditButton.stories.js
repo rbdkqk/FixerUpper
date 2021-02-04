@@ -1,4 +1,4 @@
-import { TextEditButton } from './';
+import { TextEditButton } from '../../../components/atoms';
 
 export default {
   title: 'Atoms/TextEditButton',

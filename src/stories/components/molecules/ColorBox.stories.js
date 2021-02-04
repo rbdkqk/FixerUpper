@@ -1,4 +1,4 @@
-import { ColorBox } from '.';
+import { ColorBox } from '../../../components/molecules';
 
 export default {
   title: 'Molecules/ColorBox',

@@ -1,4 +1,4 @@
-import { TextBox } from '.';
+import { TextBox } from '../../../components/atoms';
 
 export default {
   title: 'Molecules/TextBox',
