@@ -10,7 +10,7 @@ export default function ContentsArea() {
       id: 0,
       type: 'contents',
       index: 0,
-      content: '',
+      content: ``,
     },
   ]);
 
@@ -49,7 +49,7 @@ export default function ContentsArea() {
           id: nextId,
           type: 'contents',
           index: textList.length,
-          content: '',
+          content: ``,
         },
       ]);
 
@@ -74,7 +74,7 @@ export default function ContentsArea() {
   };
 
   // ContentsAreaWrap 안에 나열될 개별 TextBox들의 모임
-  let contentsList = textList.map((eachTextBox) => {
+  let contentsList = textList.map((eachTextBox, index) => {
     return (
       <TextBox
         key={eachTextBox.id}
