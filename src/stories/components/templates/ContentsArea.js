@@ -3,15 +3,19 @@ import styled from 'styled-components';
 import { TextBox } from '../atoms';
 
 export default function ContentsArea() {
+  class EachTextParagraph {
+    constructor(id, type, index, content) {
+      this.id = id;
+      this.type = type;
+      this.index = index;
+      this.content = content;
+    }
+  }
+
   // 현재 나열된 TextBox들의 목록
   // 기본적으로 TextBox 객체 하나가 들어가 있는 상태여야 하지 않나?
   const [textList, setTextList] = useState([
-    {
-      id: 0,
-      type: 'contents',
-      index: 0,
-      content: ``,
-    },
+    new EachTextParagraph(0, 'contents', 0, ``),
   ]);
 
   const [newTextBoxAdded, setNewTextBoxAdded] = useState(false);
@@ -45,12 +49,7 @@ export default function ContentsArea() {
       // textList 맨 뒤에, 새로운 TextBox 객체를 추가하고
       setTextList([
         ...textList,
-        {
-          id: nextId,
-          type: 'contents',
-          index: textList.length,
-          content: ``,
-        },
+        new EachTextParagraph(nextId, 'contents', textList.length, ``),
       ]);
 
       setNewTextBoxAdded(true);
@@ -63,12 +62,7 @@ export default function ContentsArea() {
     let after = textList.slice(index + 1);
     setTextList([
       ...before,
-      {
-        id: id,
-        type: 'contents',
-        index: index,
-        content: content,
-      },
+      new EachTextParagraph(id, 'contents', index, content),
       ...after,
     ]);
   };
