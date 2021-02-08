@@ -48,9 +48,10 @@ export default function TextBox({ id, index, content, handleContentInput }) {
         */
 
         // 아래와 같이 하면 start, end 이런것들을 잡을 필요가 없어보이는데?
+        // 검색어 : 'how to insert tag in div contenteditable'
         // 참고한 내용 : https://stackoverflow.com/questions/4823691/insert-an-html-element-in-a-contenteditable-element
 
-        // 브라우저에 따라 getSelection 존재 여부가 다를 수 있으므로, 아래와 같이 처리함
+        // 브라우저에 따라 getSelection 존재 여부 등이 다를 수 있으므로, userSelection을 선언하고 아래와 같이 처리함
         let userSelection;
         if (window.getSelection) {
           userSelection = window.getSelection();
@@ -64,7 +65,7 @@ export default function TextBox({ id, index, content, handleContentInput }) {
 
         let newElement = document.createElement('span');
         newElement.innerHTML = selectedText;
-        newElement.style.color = 'blue'; // 이 부분은 버튼(기능)마다 달라야 한다
+        newElement.style.color = 'blue'; // 이 부분은 버튼(기능)마다 달라야 한다 (추가수정 필요한 부분)
 
         range.deleteContents(); // 블록 잡은 대상을 지우고
         range.insertNode(newElement); // 그 위치에 새롭게 만든 'newElement' html엘리먼트를 끼워넣는다
