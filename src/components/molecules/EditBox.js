@@ -22,15 +22,16 @@ export default function EditBox({ isShow }) {
   );
 }
 
+// display: ${(props) => (props.isShow ? 'inline' : 'none')};
 const EditBoxWrap = styled.div`
-  display: ${(props) => (props.isShow ? 'inline' : 'none')};
   position: absolute;
-  z-index: 1px;
+  z-index: 5px;
   padding: 5px;
   cursor: pointer;
 
   border: 1px solid black;
   border-radius: 5px;
+  background-color: white;
 `;
 
 const EditBtnBox = styled.div`

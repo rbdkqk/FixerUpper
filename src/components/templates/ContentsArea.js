@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { TextBox } from '../atoms';
+import { EditBoxModal } from '../organisms';
 
 export default function ContentsArea() {
   class EachTextParagraph {
@@ -11,6 +12,12 @@ export default function ContentsArea() {
       this.content = content;
     }
   }
+
+  const [modalState, setModalState] = useState({
+    isShow: false,
+    x: 0,
+    y: 0,
+  });
 
   // 현재 나열된 TextBox들의 목록
   // 기본적으로 TextBox 객체 하나가 들어가 있는 상태여야 하지 않나?
@@ -76,6 +83,7 @@ export default function ContentsArea() {
         index={eachTextBox.index}
         content={eachTextBox.content}
         handleContentInput={handleContentInput}
+        setModalState={setModalState}
       />
     );
   });
@@ -91,22 +99,30 @@ export default function ContentsArea() {
   }, [newTextBoxAdded]);
 
   return (
-    <ContentsAreaWrap
-      className='ContentsAreaWrap'
-      onClick={(e) => {
-        let targetClassName = e.target.className;
-        let TextBoxWrapIndex = targetClassName.indexOf('TextBoxWrap');
+    <>
+      <ContentsAreaWrap
+        className='ContentsAreaWrap'
+        onClick={(e) => {
+          let targetClassName = e.target.className;
+          let TextBoxWrapIndex = targetClassName.indexOf('TextBoxWrap');
 
-        if (TextBoxWrapIndex !== -1) {
-          let TextBoxWrapClassName = targetClassName.slice(TextBoxWrapIndex);
-          document.querySelector(`.${TextBoxWrapClassName}`).focus();
-        } else {
-          handleBlankAreaClick();
-        }
-      }}
-    >
-      {contentsList}
-    </ContentsAreaWrap>
+          if (TextBoxWrapIndex !== -1) {
+            let TextBoxWrapClassName = targetClassName.slice(TextBoxWrapIndex);
+            document.querySelector(`.${TextBoxWrapClassName}`).focus();
+          } else {
+            handleBlankAreaClick();
+          }
+        }}
+      >
+        {contentsList}
+      </ContentsAreaWrap>
+      <EditBoxModal
+        isShow={modalState.isShow}
+        setModalState={modalState.setModalState}
+        x={modalState.x}
+        y={modalState.y}
+      />
+    </>
   );
 }
 

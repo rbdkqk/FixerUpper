@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-export default function TextBox({ id, index, content, handleContentInput }) {
+export default function TextBox({
+  id,
+  index,
+  content,
+  handleContentInput,
+  setModalState,
+}) {
   const [currentContent, setCurrentContent] = useState(content);
   // const [areaHeight, setAreaHeight] = useState(25);
 
@@ -82,6 +88,26 @@ export default function TextBox({ id, index, content, handleContentInput }) {
         // 아래 글에 따르면, textarea에서는 불가능하다고 함
         // div 태그의 contenteditable 속성을 이용하라고 한다... 구조를 바꿔야 할 듯
         // https://stackoverflow.com/questions/4705848/rendering-html-inside-textarea
+
+        // Getting selected text position (stackoverflow 글)
+        // https://stackoverflow.com/questions/5176761/getting-selected-text-position
+        let { x, y } = range.getBoundingClientRect();
+
+        console.log({ x, y });
+
+        if (selectedText.length > 0) {
+          setModalState({
+            isShow: true,
+            x: x,
+            y: y,
+          });
+        } else {
+          setModalState({
+            isShow: false,
+            x: x,
+            y: y,
+          });
+        }
       }}
       value={currentContent}
     ></TextBoxWrap>
