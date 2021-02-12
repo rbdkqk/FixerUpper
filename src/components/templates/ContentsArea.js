@@ -46,8 +46,9 @@ export default function ContentsArea() {
   const addNextLine = () => {};
 
   // 여백이나 패딩을 클릭하면 어떻게 동작할지 결정하는 함수
-  const handleBlankAreaClick = () => {
-    if (textList[textList.length - 1].content.length > 0) {
+  const handleBlankAreaClick = (innerText) => {
+    // console.log({ innerText });
+    if (innerText.length > 0) {
       let nextId = Math.max.apply(null, textBoxIds) + 1;
 
       // textBoxIds에 다음 id를 추가하고,
@@ -110,7 +111,10 @@ export default function ContentsArea() {
             let TextBoxWrapClassName = targetClassName.slice(TextBoxWrapIndex);
             document.querySelector(`.${TextBoxWrapClassName}`).focus();
           } else {
-            handleBlankAreaClick();
+            let childNodes = e.target.childNodes;
+            let length = childNodes.length;
+            let innerText = childNodes[length - 1].innerText;
+            handleBlankAreaClick(innerText);
           }
         }}
       >
