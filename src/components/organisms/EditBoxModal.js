@@ -2,21 +2,26 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { EditBox } from '../molecules';
 
-export default function EditBoxModal({ isShow, setModalState, x, y }) {
+export default function EditBoxModal({
+  isShow,
+  setModalState,
+  x,
+  y,
+  textBoxId,
+  textBoxIndex,
+  decorateText,
+}) {
   if (!isShow) {
     return <></>;
   } else {
     return (
-      <ModalWrap
-        className={`ModalWrap`}
-        onClick={(e) => {
-          if (e.target.className.indexOf(`ModalWrap`) !== -1) {
-            console.log(`ModalWrap`);
-          }
-        }}
-      >
+      <ModalWrap className={`ModalWrap`}>
         <ModalEditBox className={`ModalEditBox`} x={x} y={y}>
-          <EditBox />
+          <EditBox
+            textBoxId={textBoxId}
+            textBoxIndex={textBoxIndex}
+            decorateText={decorateText}
+          />
         </ModalEditBox>
       </ModalWrap>
     );

@@ -2,18 +2,43 @@ import styled from 'styled-components';
 
 import { TextEditButton } from '../atoms';
 
-export default function EditBox({ isShow }) {
+export default function EditBox({ textBoxId, textBoxIndex, decorateText }) {
   return (
-    <EditBoxWrap className='EditBoxWrap' isShow={isShow}>
+    <EditBoxWrap className='EditBoxWrap'>
       <EditBtnBox className='EditBtnBox'>
-        <TextEditButton type='Bold' isDecorated={false} size={20} />
-        <TextEditButton type='Italic' isDecorated={false} size={20} />
-        <TextEditButton type='UnderLine' isDecorated={false} size={20} />
-        <TextEditButton type='StrikeThrough' isDecorated={false} size={20} />
+        <TextEditButton
+          type='Bold'
+          size={20}
+          textBoxId={textBoxId}
+          textBoxIndex={textBoxIndex}
+          decorateText={decorateText}
+        />
+        <TextEditButton
+          type='Italic'
+          size={20}
+          textBoxId={textBoxId}
+          textBoxIndex={textBoxIndex}
+          decorateText={decorateText}
+        />
+        <TextEditButton
+          type='UnderLine'
+          size={20}
+          textBoxId={textBoxId}
+          textBoxIndex={textBoxIndex}
+          decorateText={decorateText}
+        />
+        {/* {'StrikeThrough : textDecoration을 사용해야 하는 점이 UnderLine과 겹쳐서, 일단 주석처리했음'} */}
+        {/* <TextEditButton type='StrikeThrough'  size={20} /> */}
       </EditBtnBox>
 
       <LinkBtnBox className='LinkBtnBox'>
-        <TextEditButton type='Link' isDecorated={false} size={20} />
+        <TextEditButton
+          type='Link'
+          size={20}
+          textBoxId={textBoxId}
+          textBoxIndex={textBoxIndex}
+          decorateText={decorateText}
+        />
         <span style={{ fontSize: '17px', margin: '0px', padding: '0px' }}>
           Link
         </span>
@@ -22,7 +47,6 @@ export default function EditBox({ isShow }) {
   );
 }
 
-// display: ${(props) => (props.isShow ? 'inline' : 'none')};
 const EditBoxWrap = styled.div`
   position: absolute;
   z-index: 5px;

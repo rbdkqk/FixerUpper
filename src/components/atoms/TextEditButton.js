@@ -1,6 +1,15 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
-export default function TextEditButton({ type, isDecorated, size }) {
+export default function TextEditButton({
+  type,
+  size,
+  textBoxId,
+  textBoxIndex,
+  decorateText,
+}) {
+  const [isDecorated, setIsDecorated] = useState(false);
+
   let d, stroke;
 
   if (type === 'Bold') {
@@ -26,9 +35,11 @@ export default function TextEditButton({ type, isDecorated, size }) {
   return (
     <TextEditButtonWrap
       className={`${type}ButtonWrap`}
-      onClick={() =>
-        console.log(`상위 컴포넌트의 ${type} 토글기능을 여기다 넣을 것`)
-      }
+      onClick={() => {
+        setIsDecorated(!isDecorated);
+        // console.log(`상위 컴포넌트의 ${type} 토글기능을 여기다 넣을 것`);
+        decorateText(type, !isDecorated, textBoxId, textBoxIndex);
+      }}
     >
       <svg
         viewBox='0 0 15 15'
