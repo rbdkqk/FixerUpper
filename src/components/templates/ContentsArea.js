@@ -17,6 +17,8 @@ export default function ContentsArea() {
     isShow: false,
     x: 0,
     y: 0,
+    textBoxId: NaN,
+    textBoxIndex: NaN,
   });
 
   // 현재 나열된 TextBox들의 목록
@@ -75,8 +77,7 @@ export default function ContentsArea() {
     ]);
   };
 
-  // 각 TextBox에서 onMouseUp으로 처리하던 것을, ContentArea에서 통합 처리하도록 변경함
-  const handle_blockedText = (textBoxId, textBoxIndex) => {
+  const getSelectedRange = () => {
     // 아래와 같이 하면 start, end 이런것들을 잡을 필요가 없어보이는데?
     // 검색어 : 'how to insert tag in div contenteditable'
     // 참고한 내용 : https://stackoverflow.com/questions/4823691/insert-an-html-element-in-a-contenteditable-element
@@ -92,14 +93,76 @@ export default function ContentsArea() {
 
     let range = userSelection.getRangeAt(0);
     let selectedText = userSelection.toString();
-    console.log({ selectedText });
+
+    return { range, selectedText };
+  };
+
+  // 각 TextBox에서 onMouseUp으로 처리하던 것을, ContentArea에서 통합 처리하도록 변경함
+  const handle_blockedText = (textBoxId, textBoxIndex) => {
+    let { range, selectedText } = getSelectedRange();
+
+    // console.log({ selectedText });
+
+    // Getting selected text position (stackoverflow 글)
+    // https://stackoverflow.com/questions/5176761/getting-selected-text-position
+    let { x, y } = range.getBoundingClientRect();
+
+    // console.log({ x, y });
+
+    if (selectedText.length > 0) {
+      setModalState({
+        isShow: true,
+        x: x,
+        y: y,
+        textBoxId: textBoxId,
+        textBoxIndex: textBoxIndex,
+      });
+    } else {
+      setModalState({
+        isShow: false,
+        x: x,
+        y: y,
+        textBoxId: textBoxId,
+        textBoxIndex: textBoxIndex,
+      });
+    }
+  };
+
+  const decorateText = (type, isToggled, textBoxId, textBoxIndex, color) => {
+    let { range, selectedText } = getSelectedRange();
+
+    // console.log({ isToggled, selectedText });
 
     // 꾸미기를 위한 태그를 span으로 사용해서 그런건지,
     // div로 나뉜 여러줄을 한번에 수정하면, 여러줄이었던 문장이 한줄로 통합되어 버린다
     // issue로 남겨두었으며, 추후 수정 필요함 (span이 아닌 다른 태그를 써야 할까?)
     let newElement = document.createElement('span');
     newElement.innerHTML = selectedText;
-    newElement.style.color = 'blue'; // 이 부분은 버튼(기능)마다 달라야 한다 (추가수정 필요한 부분)
+
+    // 각 버튼의 type마다 다르게 작동하도록 의도함
+    // 색상변경은 EditBox에도 아직 없음
+    if (type === 'Link') {
+      // 링크 버튼은 어떻게 처리할지 별도 구상이 필요함
+      console.log('Link button clicked');
+    } else if (type === 'Bold') {
+      isToggled
+        ? (newElement.style.fontWeight = 'bold')
+        : (newElement.style.fontWeight = 'normal');
+    } else if (type === 'Italic') {
+      isToggled
+        ? (newElement.style.fontStyle = 'italic')
+        : (newElement.style.fontStyle = 'normal');
+    } else if (type === 'UnderLine') {
+      isToggled
+        ? (newElement.style.textDecoration = 'underline')
+        : (newElement.style.textDecoration = 'none');
+    }
+    // 'StrikeThrough : textDecoration을 사용해야 하는 점이 UnderLine과 겹쳐서, 일단 주석처리했음'
+    // else if (type === 'StrikeThrough') {
+    //   newElement.style.textDecoration = 'line-through;';
+    // }
+
+    // 문제점 : 여러 개의 style을 중복 적용하려면 어떻게 해야 할까? : issue #48 남겼음
 
     if (newElement.innerHTML) {
       range.deleteContents(); // 블록 잡은 대상을 지우고
@@ -117,33 +180,6 @@ export default function ContentsArea() {
       new EachTextParagraph(textBoxId, 'contents', textBoxIndex, decoratedText),
       ...after,
     ]);
-
-    // ==================================================================
-
-    // textarea 의 내용을 앞뒤로 잘라내고, 그 사이에 '편집된 문자열을 태그로 감싸서' 끼워넣으려 했음
-    // 아래 글에 따르면, textarea에서는 불가능하다고 함
-    // div 태그의 contenteditable 속성을 이용하라고 한다... 구조를 바꿔야 할 듯
-    // https://stackoverflow.com/questions/4705848/rendering-html-inside-textarea
-
-    // Getting selected text position (stackoverflow 글)
-    // https://stackoverflow.com/questions/5176761/getting-selected-text-position
-    let { x, y } = range.getBoundingClientRect();
-
-    console.log({ x, y });
-
-    if (selectedText.length > 0) {
-      setModalState({
-        isShow: true,
-        x: x,
-        y: y,
-      });
-    } else {
-      setModalState({
-        isShow: false,
-        x: x,
-        y: y,
-      });
-    }
   };
 
   // ContentsAreaWrap 안에 나열될 개별 TextBox들의 모임
@@ -200,6 +236,9 @@ export default function ContentsArea() {
         setModalState={modalState.setModalState}
         x={modalState.x}
         y={modalState.y}
+        textBoxId={modalState.textBoxId}
+        textBoxIndex={modalState.textBoxIndex}
+        decorateText={decorateText}
       />
     </>
   );
