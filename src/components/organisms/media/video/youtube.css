@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+}
+
+#youtubeModal-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 아래 3개 항목은 중복되는 속성이 있으므로, 이걸 묶어서 빼 내는 작업 필요 */
+#youtubeModal-header {
+  width: 100%;
+  height: 10%;
+
+  /* flex: 1; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+}
+
+#youtubeModal-body {
+  width: 100%;
+  height: 80%;
+
+  /* flex: 4; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* #youtubeModal-footer {
+  width: 100%;
+  height: 10%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
