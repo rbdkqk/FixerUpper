@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TextBox } from '../atoms';
 import { EditBoxModal } from '../organisms';
 
-export default function ContentsArea() {
+export default function ContentsArea({ modalControl, setModalControl }) {
   class EachTextParagraph {
     constructor(id, type, index, content) {
       this.id = id;
@@ -20,6 +20,16 @@ export default function ContentsArea() {
     textBoxId: NaN,
     textBoxIndex: NaN,
   });
+
+  const closeTextEditModal = () => {
+    setModalState({
+      isShow: false,
+      x: 0,
+      y: 0,
+      textBoxId: NaN,
+      textBoxIndex: NaN,
+    });
+  };
 
   // 현재 나열된 TextBox들의 목록
   // 기본적으로 TextBox 객체 하나가 들어가 있는 상태여야 하지 않나?
@@ -63,16 +73,12 @@ export default function ContentsArea() {
       ]);
 
       setNewTextBoxAdded(true);
+
+      closeTextEditModal();
     } else {
       // innerText가 없다면 (선택된 문자열이 없는 상황이라면 : 바깥의 빈 공간을 클릭했다면,)
       // -> 문자 꾸미기 모달을 닫는다
-      setModalState({
-        isShow: false,
-        x: 0,
-        y: 0,
-        textBoxId: NaN,
-        textBoxIndex: NaN,
-      });
+      closeTextEditModal();
     }
   };
 
@@ -107,6 +113,8 @@ export default function ContentsArea() {
     return { range, selectedText };
   };
 
+  const [oldSelectedText, setOldSelectedText] = useState('');
+
   // 각 TextBox에서 onMouseUp으로 처리하던 것을, ContentArea에서 통합 처리하도록 변경함
   const handle_blockedText = (textBoxId, textBoxIndex) => {
     let { range, selectedText } = getSelectedRange();
@@ -128,14 +136,20 @@ export default function ContentsArea() {
         textBoxIndex: textBoxIndex,
       });
     } else {
-      setModalState({
-        isShow: false,
-        x: x,
-        y: y,
-        textBoxId: textBoxId,
-        textBoxIndex: textBoxIndex,
-      });
+      closeTextEditModal();
     }
+
+    console.log({ selectedText, oldSelectedText });
+
+    // 문제점 : 선택한 문자열 블록 위를 다시 클릭해도 모달이 닫히지 않는 문제가 있었음
+    // useState로 비교할 값을 정해놓고, 이 값이 변하지 않았다면 모달을 닫도록 처리함
+    // 값이 변한 경우에 닫히는 부분은 바로 위에 else 안에 있음
+    if (oldSelectedText === selectedText) {
+      console.log({ selectedText, oldSelectedText });
+      closeTextEditModal();
+    }
+
+    setOldSelectedText(selectedText);
   };
 
   const decorateText = (type, isToggled, textBoxId, textBoxIndex, color) => {
@@ -235,6 +249,13 @@ export default function ContentsArea() {
       setNewTextBoxAdded(false);
     }
   }, [newTextBoxAdded]);
+
+  useEffect(() => {
+    if (modalControl) {
+      closeTextEditModal();
+      setModalControl(false);
+    }
+  }, [modalControl]);
 
   return (
     <>

@@ -1,11 +1,21 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { TitleArea, ContentsArea } from '../templates';
 
 export default function MainPage() {
+  const [modalControl, setModalControl] = useState(false);
+
+  const controlTextEditModal = () => {
+    setModalControl(true);
+  };
+
   return (
     <MainPageWrap className='MainPage'>
-      <TitleArea />
-      <ContentsArea />
+      <TitleArea controlTextEditModal={controlTextEditModal} />
+      <ContentsArea
+        modalControl={modalControl}
+        setModalControl={setModalControl}
+      />
     </MainPageWrap>
   );
 }

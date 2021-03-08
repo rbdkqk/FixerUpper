@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { TitleBox } from '../organisms';
 
-export default function TitleArea() {
+export default function TitleArea({ controlTextEditModal }) {
   return (
     <TitleAreaWrap
       className='TitleAreaWrap'
       onClick={() => {
         document.querySelector('.TitleInputBox').focus();
+        controlTextEditModal();
       }}
     >
       <TitleBox />
