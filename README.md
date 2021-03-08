@@ -1,3 +1,5 @@
+(Vanilla JS 작업을 계속하기 위해서는 package.json 파일에 "type": "module" 항목을 추가해야 함)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

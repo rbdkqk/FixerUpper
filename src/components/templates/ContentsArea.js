@@ -139,6 +139,25 @@ export default function ContentsArea() {
     let newElement = document.createElement('span');
     newElement.innerHTML = selectedText;
 
+    // 기존의 문제 : 매번 새로운 newElement를 선언하고 그 자리에 끼워넣을 뿐이었으므로, 기존 편집한 사항이 유지되지 않는 문제가 있었음
+    // 만약 앞서 편집한 적이 있다면, (편집을 했었다면 span이 들어갔을테니 children이 존재할 것임)
+    if (range.commonAncestorContainer.children) {
+      let childrenNodes = range.commonAncestorContainer.children;
+      // 선택한 글자와 같은 글자를 가진 span을 찾아서, 그 style을 newElement에 복사한다
+      // 문제점 : 편집한 것과 동일한 블록을 잡는다면 괜찮은데, 편집하지 않은 부분이나 다른 편집을 가진 부분과 겹쳐서 선택하는 경우에는 편집이 덮어띄워진다 - 즉, 편집의 교집합이 동작하지 않는 문제를 해결해야 함
+      // 추가개선 필요사항 : 각 편집 버튼의 색상을 주는 방법을 좀 변경해야 한다
+      for (let i = 0; i < childrenNodes.length; i++) {
+        if (childrenNodes[i].innerText === selectedText) {
+          newElement.style.fontWeight = childrenNodes[i].style.fontWeight;
+
+          newElement.style.fontStyle = childrenNodes[i].style.fontStyle;
+
+          newElement.style.textDecoration =
+            childrenNodes[i].style.textDecoration;
+        }
+      }
+    }
+
     // 각 버튼의 type마다 다르게 작동하도록 의도함
     // 색상변경은 EditBox에도 아직 없음
     if (type === 'Link') {
