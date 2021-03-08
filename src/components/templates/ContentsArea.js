@@ -63,6 +63,16 @@ export default function ContentsArea() {
       ]);
 
       setNewTextBoxAdded(true);
+    } else {
+      // innerText가 없다면 (선택된 문자열이 없는 상황이라면 : 바깥의 빈 공간을 클릭했다면,)
+      // -> 문자 꾸미기 모달을 닫는다
+      setModalState({
+        isShow: false,
+        x: 0,
+        y: 0,
+        textBoxId: NaN,
+        textBoxIndex: NaN,
+      });
     }
   };
 
