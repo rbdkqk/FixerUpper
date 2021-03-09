@@ -1,4 +1,4 @@
-### `React Idea Editor` Project Repository 
+### `React Idea Editor`
   - "편집한 대로 보여지는 wysiwyg editor"
   - 완성 후 NPM Module로 배포 예정 (React Library) (진행중인 프로젝트입니다.)
 
