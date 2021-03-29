@@ -153,64 +153,22 @@ export default function ContentsArea({ modalControl, setModalControl }) {
   };
 
   const decorateText = (type, isToggled, textBoxId, textBoxIndex, color) => {
-    let { range, selectedText } = getSelectedRange();
+    // 문제점 : 여러 개의 style을 중복 적용하려면 어떻게 해야 할까? : issue #48 남겼음
+    // 해결방법 : execCommand를 활용해서...쉽게 처리할 수 있었다....
+    // 남은 문제점 : 블록을 잡는 방법을 변경해야 한다 (마우스만으로 하지 말고, 키보드로도 가능하게)
 
-    // console.log({ isToggled, selectedText });
-
-    // 꾸미기를 위한 태그를 span으로 사용해서 그런건지,
-    // div로 나뉜 여러줄을 한번에 수정하면, 여러줄이었던 문장이 한줄로 통합되어 버린다
-    // issue로 남겨두었으며, 추후 수정 필요함 (span이 아닌 다른 태그를 써야 할까?)
-    let newElement = document.createElement('span');
-    newElement.innerHTML = selectedText;
-
-    // 기존의 문제 : 매번 새로운 newElement를 선언하고 그 자리에 끼워넣을 뿐이었으므로, 기존 편집한 사항이 유지되지 않는 문제가 있었음
-    // 만약 앞서 편집한 적이 있다면, (편집을 했었다면 span이 들어갔을테니 children이 존재할 것임)
-    if (range.commonAncestorContainer.children) {
-      let childrenNodes = range.commonAncestorContainer.children;
-      // 선택한 글자와 같은 글자를 가진 span을 찾아서, 그 style을 newElement에 복사한다
-      // 문제점 : 편집한 것과 동일한 블록을 잡는다면 괜찮은데, 편집하지 않은 부분이나 다른 편집을 가진 부분과 겹쳐서 선택하는 경우에는 편집이 덮어띄워진다 - 즉, 편집의 교집합이 동작하지 않는 문제를 해결해야 함
-      // 추가개선 필요사항 : 각 편집 버튼의 색상을 주는 방법을 좀 변경해야 한다
-      for (let i = 0; i < childrenNodes.length; i++) {
-        if (childrenNodes[i].innerText === selectedText) {
-          newElement.style.fontWeight = childrenNodes[i].style.fontWeight;
-
-          newElement.style.fontStyle = childrenNodes[i].style.fontStyle;
-
-          newElement.style.textDecoration =
-            childrenNodes[i].style.textDecoration;
-        }
-      }
-    }
-
-    // 각 버튼의 type마다 다르게 작동하도록 의도함
-    // 색상변경은 EditBox에도 아직 없음
+    // 타입을 execCommand 매개변수로 바로 넣자...수정방향임
     if (type === 'Link') {
       // 링크 버튼은 어떻게 처리할지 별도 구상이 필요함
       console.log('Link button clicked');
     } else if (type === 'Bold') {
-      isToggled
-        ? (newElement.style.fontWeight = 'bold')
-        : (newElement.style.fontWeight = 'normal');
+      document.execCommand('Bold');
     } else if (type === 'Italic') {
-      isToggled
-        ? (newElement.style.fontStyle = 'italic')
-        : (newElement.style.fontStyle = 'normal');
+      document.execCommand('Italic');
     } else if (type === 'UnderLine') {
-      isToggled
-        ? (newElement.style.textDecoration = 'underline')
-        : (newElement.style.textDecoration = 'none');
+      document.execCommand('Underline');
     }
-    // 'StrikeThrough : textDecoration을 사용해야 하는 점이 UnderLine과 겹쳐서, 일단 주석처리했음'
-    // else if (type === 'StrikeThrough') {
-    //   newElement.style.textDecoration = 'line-through;';
-    // }
 
-    // 문제점 : 여러 개의 style을 중복 적용하려면 어떻게 해야 할까? : issue #48 남겼음
-
-    if (newElement.innerHTML) {
-      range.deleteContents(); // 블록 잡은 대상을 지우고
-      range.insertNode(newElement); // 그 위치에 새롭게 만든 'newElement' html엘리먼트를 끼워넣는다
-    }
     let decoratedText = document.querySelector(`.TextBoxWrap_${textBoxId}`)
       .innerHTML;
 
@@ -223,6 +181,79 @@ export default function ContentsArea({ modalControl, setModalControl }) {
       new EachTextParagraph(textBoxId, 'contents', textBoxIndex, decoratedText),
       ...after,
     ]);
+
+    return;
+
+    // let { range, selectedText } = getSelectedRange();
+
+    // // console.log({ isToggled, selectedText });
+
+    // // 꾸미기를 위한 태그를 span으로 사용해서 그런건지,
+    // // div로 나뉜 여러줄을 한번에 수정하면, 여러줄이었던 문장이 한줄로 통합되어 버린다
+    // // issue로 남겨두었으며, 추후 수정 필요함 (span이 아닌 다른 태그를 써야 할까?)
+    // let newElement = document.createElement('span');
+    // newElement.innerHTML = selectedText;
+
+    // // 기존의 문제 : 매번 새로운 newElement를 선언하고 그 자리에 끼워넣을 뿐이었으므로, 기존 편집한 사항이 유지되지 않는 문제가 있었음
+    // // 만약 앞서 편집한 적이 있다면, (편집을 했었다면 span이 들어갔을테니 children이 존재할 것임)
+    // if (range.commonAncestorContainer.children) {
+    //   let childrenNodes = range.commonAncestorContainer.children;
+    //   // 선택한 글자와 같은 글자를 가진 span을 찾아서, 그 style을 newElement에 복사한다
+    //   // 문제점 : 편집한 것과 동일한 블록을 잡는다면 괜찮은데, 편집하지 않은 부분이나 다른 편집을 가진 부분과 겹쳐서 선택하는 경우에는 편집이 덮어띄워진다 - 즉, 편집의 교집합이 동작하지 않는 문제를 해결해야 함
+    //   // 추가개선 필요사항 : 각 편집 버튼의 색상을 주는 방법을 좀 변경해야 한다
+    //   for (let i = 0; i < childrenNodes.length; i++) {
+    //     if (childrenNodes[i].innerText === selectedText) {
+    //       newElement.style.fontWeight = childrenNodes[i].style.fontWeight;
+
+    //       newElement.style.fontStyle = childrenNodes[i].style.fontStyle;
+
+    //       newElement.style.textDecoration =
+    //         childrenNodes[i].style.textDecoration;
+    //     }
+    //   }
+    // }
+
+    // // 각 버튼의 type마다 다르게 작동하도록 의도함
+    // // 색상변경은 EditBox에도 아직 없음
+    // if (type === 'Link') {
+    //   // 링크 버튼은 어떻게 처리할지 별도 구상이 필요함
+    //   console.log('Link button clicked');
+    // } else if (type === 'Bold') {
+    //   isToggled
+    //     ? (newElement.style.fontWeight = 'bold')
+    //     : (newElement.style.fontWeight = 'normal');
+    // } else if (type === 'Italic') {
+    //   isToggled
+    //     ? (newElement.style.fontStyle = 'italic')
+    //     : (newElement.style.fontStyle = 'normal');
+    // } else if (type === 'UnderLine') {
+    //   isToggled
+    //     ? (newElement.style.textDecoration = 'underline')
+    //     : (newElement.style.textDecoration = 'none');
+    // }
+    // // 'StrikeThrough : textDecoration을 사용해야 하는 점이 UnderLine과 겹쳐서, 일단 주석처리했음'
+    // // else if (type === 'StrikeThrough') {
+    // //   newElement.style.textDecoration = 'line-through;';
+    // // }
+
+    // // 문제점 : 여러 개의 style을 중복 적용하려면 어떻게 해야 할까? : issue #48 남겼음
+
+    // if (newElement.innerHTML) {
+    //   range.deleteContents(); // 블록 잡은 대상을 지우고
+    //   range.insertNode(newElement); // 그 위치에 새롭게 만든 'newElement' html엘리먼트를 끼워넣는다
+    // }
+    // let decoratedText = document.querySelector(`.TextBoxWrap_${textBoxId}`)
+    //   .innerHTML;
+
+    // console.log({ decoratedText });
+    // let before = textList.slice(0, textBoxIndex);
+    // let after = textList.slice(textBoxIndex + 1);
+
+    // setTextList([
+    //   ...before,
+    //   new EachTextParagraph(textBoxId, 'contents', textBoxIndex, decoratedText),
+    //   ...after,
+    // ]);
   };
 
   // ContentsAreaWrap 안에 나열될 개별 TextBox들의 모임
